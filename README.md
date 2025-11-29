@@ -31,6 +31,20 @@ Data columns (general structure):
 * Activity Label
 
 
+# repo structure
+│── data/                     # HAR-70 sensor dataset (not included)
+│── models/                   # Saved transformer models
+│── notebooks/                # Jupyter notebooks for training & analysis
+│── src/
+│     ├── data_loader.py      # Data loading & preprocessing
+│     ├── feature_engineer.py # Signal feature extraction
+│     ├── transformer_model.py # Model architecture
+│     ├── train.py            # Training script
+│     └── realtime_demo.py    # Real-time prediction script
+│── requirements.txt          # Full dependencies
+│── README.md                 # Project documentation
+
+
 
 ## ⚙️ Code Structure
 
