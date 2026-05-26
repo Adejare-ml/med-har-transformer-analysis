@@ -1,132 +1,55 @@
+# ⌚ med-har-transformer-analysis
+**Real-Time Human Activity Recognition (HAR) via Time-Series Transformers**
 
-# 🧠 Real-Time Human Activity Recognition Using Time Series Transformers & Wearable Sensors (HAR 70+ Dataset)
+[![PyTorch](https://img.shields.io/badge/ML-PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![Jupyter](https://img.shields.io/badge/Analysis-Jupyter-F37626?style=flat-square&logo=jupyter&logoColor=white)](https://jupyter.org/)
+[![Kaggle](https://img.shields.io/badge/Dataset-HAR--70-20BEB6?style=flat-square&logo=kaggle&logoColor=white)](https://www.kaggle.com/)
 
 ## 📘 Project Overview
+This repository implements a high-performance **Time-Series Transformer** architecture to classify human activities in real-time using multivariate sensor data from wearable devices.
 
-This project applies Time Series Transformers to the task of real-time Human Activity Recognition (HAR) using data collected from wearable sensors.
-The goal is to classify human movements (like walking, sitting, standing, running, etc.) from continuous multivariate sensor readings.
+Unlike traditional RNNs or LSTMs, this project leverages the **Attention Mechanism** to capture long-range temporal dependencies and inter-sensor correlations, significantly improving accuracy in complex movement patterns.
 
-The notebook demonstrates a full end-to-end workflow — from exploring the HAR dataset to training and evaluating a transformer-based deep learning model capable of understanding temporal dependencies in sensor data.
+### 🏗️ Technical Approach
+- **Data Pipeline**: Processing of the HAR-70 dataset, involving sliding-window segmentation and Z-score normalization.
+- **Architecture**: A Transformer Encoder with Multi-Head Attention and Positional Encoding to preserve the temporal order of accelerometer and gyroscope readings.
+- **Analysis**: End-to-end workflow from Signal Processing $\rightarrow$ Feature Engineering $\rightarrow$ Transformer Training $\rightarrow$ Validation.
 
+---
 
+## 📂 Repository Structure
+```text
+├── project_work.ipynb           # Master analysis & training notebook
+├── HAR_Transformer_Documentation.pdf # Full technical report
+└── README.md                   # Project documentation
+```
+*(Note: For production deployment, the logic in `project_work.ipynb` is designed to be modularized into `src/` as described in the technical report).*
 
-## 📊 Dataset Description
+---
 
-Dataset: HAR 70+ (Human Activity Recognition Dataset with Wearable Sensors)
+## ⚙️ Workflow & Implementation
 
-The dataset contains sensor readings from devices such as smartphones, accelerometers, and gyroscopes worn on different parts of the body. Each data point corresponds to a small time window of motion readings.
+### 1. Signal Processing
+The pipeline handles multivariate streams (X, Y, Z axes) from multiple sensors, converting raw signals into fixed-length overlapping windows to ensure no temporal information is lost at the boundaries.
 
-Key features include:
+### 2. Transformer Architecture
+- **Multi-Head Attention**: Allows the model to attend to different parts of the activity window simultaneously.
+- **Positional Encoding**: Adds spatial/temporal context to the sensor readings.
+- **MLP Head**: A final classification layer to map attention outputs to activity labels (Walking, Running, etc.).
 
-* Sensor channels: Acceleration, gyroscope, and orientation values (x, y, z).
-* Sampling rate: Typically recorded at fixed intervals (e.g., 50–100 Hz).
-* Target labels: Activity types like walking, running, sitting, standing, lying, climbing stairs, etc.
+### 3. Evaluation Metrics
+The model is evaluated using:
+- **Confusion Matrices**: To identify specific activity misclassifications.
+- **F1-Score & Accuracy**: Balancing precision and recall across all activity classes.
+- **ROC Curves**: Analyzing the trade-off between true positive and false positive rates.
 
-Data columns (general structure):
+---
 
-* Timestamp
-* Sensor ID / Subject ID
-* Accelerometer (X, Y, Z)
-* Gyroscope (X, Y, Z)
-* Activity Label
+## 🚀 Getting Started
+To reproduce the results:
+1. Clone the repository.
+2. Install dependencies: `pip install torch pandas scikit-learn matplotlib seaborn`.
+3. Run the `project_work.ipynb` notebook.
 
-
-# repo structure
-│── data/                     # HAR-70 sensor dataset (not included)
-│── models/                   # Saved transformer models
-│── notebooks/                # Jupyter notebooks for training & analysis
-│── src/
-│     ├── data_loader.py      # Data loading & preprocessing
-│     ├── feature_engineer.py # Signal feature extraction
-│     ├── transformer_model.py # Model architecture
-│     ├── train.py            # Training script
-│     └── realtime_demo.py    # Real-time prediction script
-│── requirements.txt          # Full dependencies
-│── README.md                 # Project documentation
-
-
-
-## ⚙️ Code Structure
-
-### 1. Data Loading and Preprocessing
-
-* Imports necessary libraries (Pandas, NumPy, Matplotlib, PyTorch, etc.).
-* Loads the HAR 70+ dataset and merges sensor data files if needed.
-* Normalizes sensor readings and encodes activity labels.
-* Splits the data into training, validation, and test sets.
-
-### 2. Exploratory Data Analysis (EDA)
-
-* Visualizes activity distributions and sensor signal patterns.
-* Examines correlations between accelerometer and gyroscope axes.
-* Plots sample activity waveforms to illustrate differences in movement.
-
-### 3. Feature Scaling and Windowing
-
-* Segments continuous sensor streams into fixed-length time windows.
-* Extracts overlapping frames to preserve temporal continuity.
-* Scales numeric features for consistent model input.
-
-### 4. Model Design — Time Series Transformer
-
-* Implements a **Transformer Encoder** architecture adapted for time series.
-* Uses positional encoding to retain order information.
-* Employs multi-head attention to capture relationships between sensor readings over time.
-* Outputs activity class probabilities.
-
-### 5. Training and Validation
-
-* Trains the model using an optimizer such as **Adam** and a loss function like CrossEntropyLoss.
-* Monitors training and validation accuracy/loss across epochs.
-* Saves the best-performing model based on validation performance.
-
-### 6. Evaluation and Visualization
-
-* Evaluates model performance using:
-
-  * Accuracy
-  * Confusion Matrix
-  * Classification Report (Precision, Recall, F1-Score)
-  * ROC Curves for multi-class activity prediction
-* Generates visual graphs such as:
-
-  * Accuracy vs. Epochs
-  * Loss vs. Epochs
-  * ROC Curve
-  * Feature Importance Visualization (if applicable)
-
-
-
-## 📈 Results / Output
-
-* A trained ransformer-based HAR model capable of classifying activities in real time.
-* Detailed performance metrics highlighting model effectiveness.
-* Visual insights into model behavior, training dynamics, and feature contributions.
-* Example plots:
-
-  * Training/validation accuracy and loss curves
-  * Confusion matrix of predicted vs. true activity labels
-  * ROC curves for each class
-
-
-
-## 🧠 Key Takeaways
-
-* Transformers can effectively handle **multivariate time series data** without relying on recurrent architectures like LSTMs.
-* The **attention mechanism** helps capture both short-term and long-term dependencies in motion sequences.
-* Proper **data segmentation and normalization** are crucial for accurate HAR model performance.
-* Visualization is essential for diagnosing model performance and feature relevance.
-
-
-## 🙌 Acknowledgments
-
-This work leverages contributions from the open-source ML community, especially:
-
-* PyTorch — for deep learning implementation
-* scikit-learn — for evaluation and preprocessing
-* Matplotlib / Seaborn — for visualization
-* HAR 70+ Dataset From Kaggle — for providing real-world wearable sensor data
-
-Author: Adelugba Adejare
-Email: adelugbaadejare03@gmail.com
-
+---
+*Developed by Adelugba Adejare*
